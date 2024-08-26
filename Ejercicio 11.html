@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frases de Autores</title>
+  <!-- Incluir Bootstrap CSS desde CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Incluir Vue.js desde el CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="container">
+    <h2>Frases de Autores</h2>
+    <button @click="showAddModal" class="btn btn-warning mb-3">Añadir Frase</button>
+
+    <!-- Tabla de frases -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th> <!-- Nueva columna para el ID -->
+          <th scope="col">Frase</th>
+          <th scope="col">Autor</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(frase, index) in frases" :key="frase.id"> <!-- Usa el ID como clave -->
+          <td>{{ frase.id }}</td> <!-- Muestra el ID -->
+          <td>"{{ frase.texto }}"</td>
+          <td class="text-end">- {{ frase.autor }}</td>
+          <td>
+            <button @click="openEditModal(frase)" class="btn btn-success btn-sm">Editar</button>
+            <button @click="deleteFrase(frase.id)" class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Modal para añadir una nueva frase -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addModalLabel">Añadir Frase</h5>
+            <button type="button" class="btn-close" @click="closeAddModal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <input v-model="newFrase.texto" class="form-control" placeholder="Nueva frase" />
+            </div>
+            <div class="mb-3">
+              <input v-model="newFrase.autor" class="form-control" placeholder="Nuevo autor" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeAddModal">Cancelar</button>
+            <button type="button" class="btn btn-primary" @click="addFrase">Añadir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para editar una frase -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Editar Frase</h5>
+            <button type="button" class="btn-close" @click="closeEditModal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <input v-model="editFrase.texto" class="form-control" placeholder="Editar frase" />
+            </div>
+            <div class="mb-3">
+              <input v-model="editFrase.autor" class="form-control" placeholder="Editar autor" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeEditModal">Cancelar</button>
+            <button type="button" class="btn btn-primary" @click="saveEdit">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertas de Bootstrap -->
+    <div v-if="alertMessage" class="alert alert-dismissible fade show" :class="alertClass" role="alert">
+      {{ alertMessage }}
+      <button type="button" class="btn-close" @click="alertMessage = ''"></button>
+    </div>
+  </div>
+
+  <!-- Incluir Bootstrap JS y dependencias desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Enlazar app.js -->
+  <script src="app.js"></script>
+</body>
+</html>
